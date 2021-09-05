@@ -16,18 +16,9 @@ int main()
 	while (cases--)
 	{
 		cin >> problem;
-		for (auto chr = problem.begin(); chr < problem.end() - 4; chr += 2)
-		{
-			cout << chr[0];
-			if (chr[1] == chr[2])
-			{
-				cout << chr[1];
-				chr--;
-			}
-			else
-				cout << chr[1] << chr[2];
-			cout << chr[3];
-		}
+		cout << problem.front();
+		for (size_t index = 1; index < problem.length(); index += 2)
+			cout << problem[index];
 		cout << endl;
 	}
 }
