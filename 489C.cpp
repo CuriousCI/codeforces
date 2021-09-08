@@ -1,21 +1,24 @@
 #include <iostream>
+#include <cmath>
 #include <cstdint>
 #include <algorithm>
 
 using namespace std;
+
+bool possible(uint32_t length, uint32_t sum)
+{
+	return sum >= 0 && sum <= 9 * length;
+}
 
 int main()
 {
 	ios_base::sync_with_stdio(NULL);
 	cin.tie(NULL);
 
-	uint16_t length, sum;
+	uint32_t length, sum;
 	cin >> length >> sum;
 
-	string
-
-		if (!sum)
-			cout
-		<< -1 << ' ' << -1;
-	else
+	for (uint32_t position = 0; position < length; position)
+	{
+		}
 }
