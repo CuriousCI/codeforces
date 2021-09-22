@@ -13,10 +13,27 @@ int main()
 	cin >> word;
 
 	uint32_t distance = 0;
-	char current_letter = 'a';
+	bool swapped = false;
+	char last = 'a';
 
-	for (size_t index = 0; index < word.length() - 1; index++)
+	for (auto letter : word)
 	{
-		cout << (uint16_t)'a';
+		swapped = false;
+
+		if (last > letter)
+		{
+			swap(last, letter);
+			swapped = true;
+		}
+
+		distance += min({
+			letter - last,
+			26 - (letter - 'a') + (last - 'a'),
+		});
+
+		if (!swapped)
+			last = letter;
 	}
+
+	cout << distance;
 }
