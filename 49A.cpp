@@ -1,4 +1,5 @@
 #include <iostream>
+#include <string>
 #include <cstdint>
 #include <algorithm>
 
@@ -10,6 +11,13 @@ int main()
 	cin.tie(NULL);
 
 	string question;
-	cin >> question;
-	cout << (((string) "aeiouyAEIOUY").find(question[question.length() - 1]) != string::npos ? "YES" : "NO");
+	getline(cin, question);
+	auto offset = 1;
+	char letter = question[question.length() - offset];
+	while ((letter < 'a' || letter > 'z') && (letter < 'A' || letter > 'Z'))
+	{
+		offset++;
+		letter = question[question.length() - offset];
+	}
+	cout << (((string) "aeiouyAEIOUY").find(question[question.length() - offset]) != string::npos ? "YES" : "NO");
 }
