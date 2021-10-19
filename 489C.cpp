@@ -5,11 +5,6 @@
 
 using namespace std;
 
-bool possible(uint32_t length, uint32_t sum)
-{
-	return sum >= 0 && sum <= 9 * length;
-}
-
 int main()
 {
 	ios_base::sync_with_stdio(NULL);
@@ -18,27 +13,46 @@ int main()
 	uint32_t length, total;
 	cin >> length >> total;
 
-	uint32_t sum = total;
-	string smallest, biggest;
-	for (uint32_t position = 0; position < length; position)
-		for (uint16_t digit = 0; digit < 10; digit++)
-			if ((position > 0 || digit > 0 || (length == 1 && digit == 0)) &&
-				possible(length - position - 1, sum - digit))
-			{
-				smallest += '0' + digit;
-				sum -= digit;
-				break;
-			}
-	sum = total;
-	for (uint32_t position = 0; position < length; position)
-		for (uint16_t digit = 9; digit >= 0; digit--)
-			if ((position > 0 || digit > 0 || (length == 1 && digit == 0)) &&
-				possible(length - position - 1, sum - digit))
-			{
-				biggest += '0' + digit;
-				sum -= digit;
-				break;
-			}
+	if (total > length * 9 || (length > 1 && total == 0))
+		cout << -1 << ' ' << -1;
+	else if (!total)
+	{
+		for (auto _ = 0; _ < length; _++)
+			cout << '0';
+		cout << ' ';
+		for (auto _ = 0; _ < length; _++)
+			cout << '0';
+	}
+	else
+	{
+		string biggest, smallest = "1";
 
-	cout << smallest << ' ' << biggest;
+		for (auto _ = 0; _ < length; _++)
+			biggest += '0';
+
+		for (auto _ = 1; _ < length; _++)
+			smallest += '0';
+
+		auto reminder = total - 1;
+
+		auto index = 0;
+		while (total && index < length)
+		{
+			auto difference = min(total, (uint32_t)9);
+			biggest[index] += difference;
+			index++;
+			total -= difference;
+		}
+
+		index = length - 1;
+		while (reminder && index >= 0)
+		{
+			auto difference = min(reminder, (uint32_t)9);
+			smallest[index] += difference;
+			index--;
+			reminder -= difference;
+		}
+
+		cout << smallest << ' ' << biggest;
+	}
 }
