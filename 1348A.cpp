@@ -16,23 +16,14 @@ int main()
 	while (cases--)
 	{
 		cin >> coins;
-		int32_t left = 0, right = 0;
+		int64_t left = 0, right = 0;
 
-		for (uint32_t exponent = 1; exponent <= coins / 2; exponent++)
-			if (exponent & 1)
-			{
-				left += 1 << exponent;
-				left += 1 << (coins - exponent + 1);
-			}
-			else
-			{
-				right += 1 << exponent;
-				right += 1 << (coins - exponent + 1);
-			}
+		for (uint64_t exponent = 1; exponent < coins / 2; exponent++)
+			left += 1 << exponent;
+		left += 1 << coins;
+		for (uint64_t exponent = coins / 2; exponent < coins; exponent++)
+			right += 1 << exponent;
 
-		if (coins == 2)
-			cout << 2 << endl;
-		else
-			cout << abs(left - right) << endl;
+		cout << abs(left - right) << endl;
 	}
 }
