@@ -8,4 +8,14 @@ int main()
 {
 	ios_base::sync_with_stdio(NULL);
 	cin.tie(NULL);
+
+	uint16_t cases;
+	uint64_t number;
+
+	cin >> cases;
+	while (cases--)
+	{
+		cin >> number;
+		cout << (number <= 3 ? number - 1 : (number & 1 ? 3 : 2)) << endl;
+	}
 }
