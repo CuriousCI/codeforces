@@ -1,4 +1,5 @@
 #include <iostream>
+#include <vector>
 #include <cstdint>
 #include <algorithm>
 
@@ -13,12 +14,12 @@ int main()
 	string song;
 
 	cin >> length >> questions >> song;
+	vector<uint64_t> prefixes(1, song.front() - 'a' + 1);
+	for (auto index = 0; index < length; index++)
+		prefixes.push_back(prefixes.back() + song[index] - 'a' + 1);
 	while (questions--)
 	{
 		cin >> left >> right;
-		auto result = 0;
-		for (auto letter = left - 1; letter < right; letter++)
-			result += song[letter] * (song[letter] - 'a' - 1);
-		cout << result;
+		cout << prefixes[right] - prefixes[left - 1] << endl;
 	}
 }
