@@ -10,19 +10,17 @@ int main()
 	ios_base::sync_with_stdio(NULL);
 	cin.tie(NULL);
 
-	uint16_t beautiful;
-	string text;
-	set<char> distinct;
+	string number;
+	cin >> number;
 
-	cin >> beautiful >> text;
-
-	for (auto letter : text)
-		distinct.insert(letter);
-
-	if (distinct.size() < beautiful)
-		cout << "NO";
+	auto dot = number.find('.');
+	if (number[dot - 1] == '9')
+		cout << "GOTO Vasilisa.";
 	else
 	{
-		cout << "YES" << endl;
+		if (number[dot + 1] >= '5')
+			number[dot - 1]++;
+
+		cout << number.substr(0, dot);
 	}
 }
