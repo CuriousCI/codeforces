@@ -6,34 +6,43 @@
 
 using namespace std;
 
+struct Player
+{
+	string name;
+	int64_t score;
+};
+
 int main()
 {
 	ios_base::sync_with_stdio(NULL);
 	cin.tie(NULL);
 
 	uint16_t rounds;
+
 	cin >> rounds;
-
-	string player;
-	int32_t score, best = 0;
-	vector<pair<string, int32_t>> order;
-
-	map<string, int32_t> players;
-
-	while (rounds--)
+	vector<Player> players(rounds);
+	map<string, int64_t> scores;
+	for (auto &player : players)
 	{
-		cin >> player >> score;
-		players[player] += score;
-		order.push_back({player, players[player]});
+		cin >> player.name >> player.score;
+		scores[player.name] += player.score;
 	}
 
-	for (auto play : players)
-		best = max(play.second, best);
+	int64_t best_score = INT64_MIN;
+	for (auto score : scores)
+		best_score = max(best_score, score.second);
 
-	for (auto play : order)
-		if (play.second == best && play.second == players[play.first])
+	scores.clear();
+	string winner;
+	for (auto player : players)
+	{
+		scores[player.name] += player.score;
+		if (scores[player.name] >= best_score)
 		{
-			cout << play.first;
+			winner = player.name;
 			break;
 		}
+	}
+
+	cout << winner;
 }
