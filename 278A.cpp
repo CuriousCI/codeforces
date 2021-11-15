@@ -1,4 +1,5 @@
 #include <iostream>
+#include <vector>
 #include <cstdint>
 #include <algorithm>
 
@@ -9,13 +10,29 @@ int main()
 	ios_base::sync_with_stdio(NULL);
 	cin.tie(NULL);
 
-	uint16_t alpha, beta, pairs = 0;
+	int16_t distances_size, alpha, beta, clockwise = 0, counterclockwise = 0;
+	cin >> distances_size;
+
+	vector<uint16_t> distances(distances_size);
+	for (auto &distance : distances)
+		cin >> distance;
+
 	cin >> alpha >> beta;
+	if (alpha > beta)
+	{
+		auto temp = alpha;
+		alpha = beta;
+		beta = temp;
+	}
 
-	for (auto omega = 0; omega < 1000; omega++)
-		for (auto delta = 0; delta < 1000; delta++)
-			if (omega * omega + delta == alpha && delta * delta + omega == beta)
-				pairs++;
+	for (auto index = alpha - 1; index < beta - 1; index++)
+		clockwise += distances[index];
 
-	cout << pairs;
+	for (auto index = alpha - 2; index >= 0; index--)
+		counterclockwise += distances[index];
+
+	for (auto index = beta - 1; index < distances.size(); index++)
+		counterclockwise += distances[index];
+
+	cout << min(clockwise, counterclockwise);
 }
