@@ -16,7 +16,6 @@ int main()
 	string alphabet, word;
 
 	cin >> cases;
-	getline(cin, alphabet);
 	while (cases--)
 	{
 		getline(cin, alphabet);
