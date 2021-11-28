@@ -21,14 +21,15 @@ int main()
 	{
 		if (character == 'B')
 			size++;
-		else
+		else if (size)
 		{
 			digits.push_back(size);
 			size = 0;
 		}
 	}
 
-	digits.push_back(size);
+	if (size)
+		digits.push_back(size);
 	cout << digits.size() << endl;
 	for (auto digit : digits)
 		cout << digit << ' ';
