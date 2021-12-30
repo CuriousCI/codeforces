@@ -18,17 +18,20 @@ int main()
 		string word;
 		cin >> length >> word;
 
-		uint64_t smallest = 0;
-		for (int64_t right = length - 1; right >= 0; right--)
-			if (word[right] < word[smallest])
-				smallest = right;
+		string alpha;
+		alpha += word.front();
+		alpha += word.front();
+
+		string beta;
+		beta += alpha.front();
+		for (auto index = 1; index < word.length(); index++)
+			if (word[index] <= word[index - 1])
+				beta += word[index];
 			else
 				break;
 
-		for (size_t index = 0; index <= smallest; index++)
-			cout << word[index];
-		for (int64_t index = smallest; index >= 0; index--)
-			cout << word[index];
-		cout << endl;
+		string reversed = beta;
+		ranges::reverse(reversed);
+		cout << (alpha < beta + reversed ? alpha : beta + reversed) << endl;
 	}
 }
