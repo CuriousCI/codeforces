@@ -1,59 +1,11 @@
 #include <iostream>
 #include <ranges>
+#include <set>
 #include <vector>
 #include <cstdint>
 #include <algorithm>
 
 using namespace std;
-
-struct Node
-{
-	int64_t
-		left,
-		right,
-		size;
-
-	Node *front = nullptr,
-		 *back = nullptr;
-
-	bool insert(Node *node)
-	{
-		if (node->right == this->right)
-		{
-			this->back = node;
-			return true;
-		}
-		else if (node->left == this->left)
-		{
-			this->front = node;
-			return true;
-		}
-		else
-		{
-			if (this->front)
-				if (this->front->right >= node->right)
-					return this->front->insert(node);
-
-			if (this->back)
-				if (this->back->left <= node->left)
-					return this->back->insert(node);
-		}
-
-		return false;
-	}
-
-	int64_t missing()
-	{
-		if (this->left == this->right)
-			return this->left;
-		if (this->front)
-			return this->front->right + 1;
-		if (this->back)
-			return this->back->left - 1;
-
-		return 0;
-	}
-};
 
 int main()
 {
@@ -67,32 +19,42 @@ int main()
 		uint64_t size;
 		cin >> size;
 
-		vector<Node> nodes(size);
-		for (auto &node : nodes)
+		set<pair<uint64_t, uint64_t>> existing_ranges;
+
+		vector<pair<uint64_t, uint64_t>> rngs(size);
+		for (auto &rng : rngs)
 		{
-			cin >> node.left >> node.right;
-			node.size = node.right - node.left;
+			cin >> rng.first >> rng.second;
+			existing_ranges.insert(rng);
 		}
 
-		ranges::sort(nodes, [](Node alpha, Node beta)
-					 { return alpha.size > beta.size; });
+		for (auto rng : rngs)
 
-		vector<Node *> to_join;
-		for (auto index = 1; index < size; index++)
-			to_join.push_back(&nodes[index]);
-
-		while (to_join.size() > 0)
 		{
-			vector<Node *> temp;
-			for (auto node : to_join)
-				if (!nodes.front().insert(node))
-					temp.push_back(node);
-
-			to_join = temp;
+			cout << rng.first << ' ' << rng.second << ' ';
+			if (rng.first == rng.second)
+				cout << rng.first;
+			else
+			{
+				bool found = false;
+				for (auto digit = rng.first; digit <= rng.second && !found; digit++)
+					if (digit == rng.first && existing_ranges.contains({digit + 1, rng.second}))
+					{
+						found = true;
+						cout << digit;
+					}
+					else if (digit == rng.second && existing_ranges.contains({rng.first, digit - 1}))
+					{
+						found = true;
+						cout << digit;
+					}
+					else if (existing_ranges.contains({rng.first, digit - 1}) && existing_ranges.contains({digit + 1, rng.second}))
+					{
+						found = true;
+						cout << digit;
+					}
+			}
+			cout << endl;
 		}
-
-		for (auto node : nodes)
-			cout << node.left << ' ' << node.right << ' ' << node.missing() << endl;
-		cout << endl;
 	}
 }
