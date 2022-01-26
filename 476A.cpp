@@ -10,21 +10,17 @@ int main()
 	ios_base::sync_with_stdio(NULL);
 	cin.tie(NULL);
 
-	uint64_t
+	double
 		total_steps,
-		integer,
-		multiplier = 1;
+		integer;
 
 	cin >> total_steps >> integer;
 
-	bool found = false;
-	while (multiplier * integer <= total_steps && !found)
+	if (integer > total_steps)
+		cout << -1;
+	else
 	{
-		auto modulo = total_steps % (multiplier * integer);
-		if (ceil((double)(total_steps - modulo) /))
-			multiplier++;
+		uint16_t multiplier = ceil(ceil(total_steps / 2.0) / integer);
+		cout << (uint16_t)(integer * multiplier);
 	}
-
-	// cin >> total_steps >> integer;
-	// cout << (total_steps < integer ? -1 : );
 }
