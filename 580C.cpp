@@ -7,10 +7,13 @@ using namespace std;
 
 vector<vector<uint64_t>> tree;
 vector<uint16_t> cats;
+vector<bool> visited;
 int64_t max_cats;
 
 uint64_t restaurants(int64_t remaining_cats, uint64_t vertex)
 {
+	visited[vertex] = true;
+
 	if (cats[vertex])
 	{
 		remaining_cats--;
@@ -20,12 +23,13 @@ uint64_t restaurants(int64_t remaining_cats, uint64_t vertex)
 	else
 		remaining_cats = max_cats;
 
-	if (tree[vertex].size() == 0)
+	if (tree[vertex].size() == 1 && vertex != 0)
 		return 1;
 
 	uint64_t result = 0;
 	for (auto child : tree[vertex])
-		result += restaurants(remaining_cats, child);
+		if (!visited[child])
+			result += restaurants(remaining_cats, child);
 
 	return result;
 };
@@ -43,6 +47,7 @@ int main()
 		uint16_t cat;
 		cin >> cat;
 		cats.push_back(cat);
+		visited.push_back(false);
 	}
 
 	for (auto _ = 0; _ < vertices; _++)
@@ -52,14 +57,9 @@ int main()
 	{
 		uint64_t left, right;
 		cin >> left >> right;
-		if (left > right)
-		{
-			auto swap = right;
-			right = left;
-			left = swap;
-		}
 
 		tree[left - 1].push_back(right - 1);
+		tree[right - 1].push_back(left - 1);
 	}
 
 	cout << restaurants(max_cats, 0);
