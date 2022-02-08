@@ -7,21 +7,6 @@
 
 using namespace std;
 
-typedef pair<uint16_t, uint16_t> Point;
-
-map<Point, set<Point>> connections;
-map<Point, bool> visited;
-set<Point> cannon_balls;
-
-void check_configuration(Point point)
-{
-	visited[point] = true;
-
-	for (auto connection : connections[point])
-		if (!visited[connection])
-			check_configuration(connection);
-}
-
 int main()
 {
 	ios_base::sync_with_stdio(NULL);
@@ -31,10 +16,6 @@ int main()
 	cin >> test_cases;
 	while (test_cases--)
 	{
-		connections.clear();
-		cannon_balls.clear();
-		visited.clear();
-
 		uint16_t size;
 		cin >> size;
 
@@ -42,44 +23,24 @@ int main()
 		for (auto &row : polygon)
 			cin >> row;
 
-		for (auto y = 0; y < size; y++)
-			for (auto x = 0; x < size; x++)
-				if (polygon[y][x] == '1')
-					cannon_balls.insert({y, x});
+		vector<vector<bool>> valid(size);
+		for (auto &row : valid)
+			row = vector<bool>(size, false);
 
 		for (auto y = 0; y < size; y++)
 			for (auto x = 0; x < size; x++)
-				if (polygon[y][x] == '1')
-				{
-					if (y > 0)
-						if (polygon[y - 1][x] == '1')
-						{
-							connections[{y, x}].insert({y - 1, x});
-							connections[{y - 1, x}].insert({y, x});
-						}
+				if (polygon[y][x] == '0')
+					valid[y][x] = true;
+				else if (y == size - 1 || x == size - 1)
+					valid[y][x] = true;
+				else if (polygon[y][x + 1] == '1' || polygon[y + 1][x] == '1')
+					valid[y][x] = true;
 
-					if (x > 0)
-						if (polygon[y][x - 1] == '1')
-						{
-							connections[{y, x}].insert({y, x - 1});
-							connections[{y, x - 1}].insert({y, x});
-						}
-				}
+		bool is_valid = true;
+		for (auto y = 0; y < size && is_valid; y++)
+			for (auto x = 0; x < size && is_valid; x++)
+				is_valid = valid[y][x];
 
-		for (auto y = 0; y < size; y++)
-			check_configuration({y, size - 1});
-
-		for (auto x = 0; x < size; x++)
-			check_configuration({size - 1, x});
-
-		bool is_configuration_valid = true;
-		for (auto cannon_ball : cannon_balls)
-		{
-			is_configuration_valid = visited[cannon_ball];
-			if (!is_configuration_valid)
-				break;
-		}
-
-		cout << (is_configuration_valid ? "YES" : "NO") << endl;
+		cout << (is_valid ? "YES" : "NO") << endl;
 	}
 }
