@@ -17,9 +17,18 @@ int main()
 	{
 		cin >> number;
 		bool has_even = regex_search(number, regex("[2468]"));
+
 		if (!has_even)
 			cout << -1;
 		else
-			cout << (regex_search(number, regex("[2468]$")) ? 0 : 1)
+		{
+			bool is_even = !((number.back() - '0') & 1);
+			if (is_even)
+				cout << 0;
+			else
+				cout << (!((number.front() - '0') & 1) ? 1 : 2);
+		}
+
+		cout << endl;
 	}
 }
