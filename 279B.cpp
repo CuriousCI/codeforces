@@ -12,22 +12,25 @@ int main()
 	ios_base::sync_with_stdio(NULL);
 	cin.tie(NULL);
 
-	uint64_t size, time;
+	int64_t size, time;
 	cin >> size >> time;
 
-	vector<uint64_t> books(size), times(size);
+	vector<int64_t> books(size), times(size);
 	for (auto &book : books)
 		cin >> book;
 
-	times.front() = reduce(books.begin(), books.end());
+	int64_t readable_books = 0;
+	for (auto book : books)
+	{
+		if (time <= 0)
+			break;
 
-	for (auto index = 1; index < size; index++)
-		times[index] = times[index - 1] - books[index - 1];
+		if (book <= time)
+		{
+			time -= book;
+			readable_books++;
+		}
+	}
 
-	auto readable = size;
-	auto offset = 0;
-	while (times[offset] > time)
-		offset++;
-
-	cout << readable - offset;
+	cout << readable_books;
 }
