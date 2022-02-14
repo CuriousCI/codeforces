@@ -10,43 +10,38 @@ int main()
 	ios_base::sync_with_stdio(NULL);
 	cin.tie(NULL);
 
-	uint16_t cases, left = UINT16_MAX, right = UINT16_MAX;
+	uint16_t test_cases;
 	string chars;
-	char current = ';';
 
-	cin >> cases;
-	while (cases--)
+	cin >> test_cases;
+	while (test_cases--)
 	{
 		cin >> chars;
-		for (auto index = 0; index < chars.size(); index++)
-			if (chars[index] == 'a')
-			{
-				left = right = index;
-				current = 'a';
-				break;
-			}
 
-		bool valid = true;
-		while (right - left < chars.size() - 1 && valid)
+		uint16_t position = chars.find('a');
+		bool is_alphabetical = position != string::npos;
+
+		if (is_alphabetical)
 		{
-			if (left > 0)
-			{
-				if (chars[left - 1] == current + 1)
-					left--;
-				else
-					valid = false;
-			}
-			else if (right < chars.size() - 1)
-			{
-				if (chars[right + 1] == current + 1)
-					right++;
-				else
-					valid = false;
-			}
+			uint16_t left = position,
+					 right = position;
+			char letter = 'a';
 
-			current++;
+			while ((left != 0 || right != chars.size() - 1) && is_alphabetical)
+				if (chars[left - 1] == letter + 1 && left > 0)
+				{
+					left--;
+					letter++;
+				}
+				else if (chars[right + 1] == letter + 1 && right < chars.size() - 1)
+				{
+					right++;
+					letter++;
+				}
+				else
+					is_alphabetical = false;
 		}
 
-		cout << (valid ? "YES" : "NO") << endl;
+		cout << (is_alphabetical ? "YES" : "NO") << endl;
 	}
 }
