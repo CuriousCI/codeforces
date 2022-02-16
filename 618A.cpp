@@ -14,13 +14,9 @@ int main()
 	int64_t slimes;
 	cin >> slimes;
 
-	vector<int64_t> result;
-
-	for (auto digit = 0; (1 << digit) <= slimes; digit++)
-		if (slimes & (1 << digit))
-			result.push_back(1 << digit);
-
-	ranges::reverse(result);
-	for (uint64_t value : result)
-		cout << value << ' ';
+	vector<int64_t> result(1, 1);
+	for (auto _ = 1; _ < slimes; _++)
+	{
+		if (result.back() ==
+	}
 }
