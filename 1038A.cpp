@@ -1,4 +1,5 @@
 #include <iostream>
+#include <vector>
 #include <cstdint>
 #include <algorithm>
 
@@ -13,9 +14,15 @@ int main()
 	string sequence;
 
 	cin >> length >> constant >> sequence;
-	for (uint32_t position = 0; position < length; position++)
-	{
-		}
+	vector<uint32_t> frequencies(constant, 0);
 
-	cout << longest;
+	for (auto letter : sequence)
+		if (letter - 'A' < constant)
+			frequencies[letter - 'A']++;
+
+	uint32_t result = UINT32_MAX;
+	for (auto frequency : frequencies)
+		result = min(result, frequency);
+
+	cout << result * constant;
 }
