@@ -11,11 +11,18 @@ int main()
 	cin.tie(NULL);
 
 	uint16_t cases;
-	uint64_t programmers, mathematicians;
 	cin >> cases;
 
 	while (cases--)
 	{
+		uint64_t programmers, mathematicians;
 		cin >> programmers >> mathematicians;
+
+		if (programmers > mathematicians)
+		{
+			auto swap = programmers;
+			programmers = mathematicians;
+			mathematicians = swap;
+		}
 	}
 }
