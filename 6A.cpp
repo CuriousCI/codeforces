@@ -24,8 +24,14 @@ int main()
 	for (auto &stick : sticks)
 		cin >> stick;
 
-	bool triangle = normal(sticks[0], sticks[1], sticks[2]) || normal(sticks[0], sticks[1], sticks[3]) || normal(sticks[0], sticks[2], sticks[sticks[3]]) || normal(sticks[1], sticks[2], sticks[3]),
-		 seg = segment(sticks[0], sticks[1], sticks[2]) || segment(sticks[0], sticks[1], sticks[3]) || segment(sticks[0], sticks[2], sticks[sticks[3]]) || segment(sticks[1], sticks[2], sticks[3]);
+	bool triangle = normal(sticks[0], sticks[1], sticks[2]) ||
+					normal(sticks[0], sticks[1], sticks[3]) ||
+					normal(sticks[0], sticks[2], sticks[3]) ||
+					normal(sticks[1], sticks[2], sticks[3]),
+		 seg = segment(sticks[0], sticks[1], sticks[2]) ||
+			   segment(sticks[0], sticks[1], sticks[3]) ||
+			   segment(sticks[0], sticks[2], sticks[3]) ||
+			   segment(sticks[1], sticks[2], sticks[3]);
 
 	cout << (triangle ? "TRIANGLE" : seg ? "SEGMENT"
 										 : "IMPOSSIBLE");
