@@ -17,10 +17,25 @@ int main()
 	for (auto &digit : digits)
 		cin >> digit;
 
-	string result;
+	uint16_t fives = 0, zeros = 0;
 	for (auto digit : digits)
 		if (digit == '0')
-			result.push_back(digit);
+			zeros++;
+		else
+			fives++;
 
-	cout << result;
+	if (fives < 9 || !zeros)
+	{
+		if (zeros)
+			cout << 0;
+		else
+			cout << -1;
+	}
+	else
+	{
+		for (auto _ = 0; _ < (fives - (fives % 9)) / 9; _++)
+			cout << "555555555";
+		for (auto _ = 0; _ < zeros; _++)
+			cout << "0";
+	}
 }
