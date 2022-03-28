@@ -1,5 +1,6 @@
 #include <iostream>
-#include <map>
+#include <cmath>
+#include <ranges>
 #include <vector>
 #include <cstdint>
 #include <algorithm>
@@ -11,40 +12,32 @@ int main()
 	ios_base::sync_with_stdio(NULL);
 	cin.tie(NULL);
 
-	uint16_t size, skill;
+	int16_t boys_number, girls_number;
+	cin >> boys_number;
 
-	map<uint16_t, uint32_t> boys, girls;
-	cin >> size;
-	while (size--)
-	{
+	vector<int16_t> boys_skill(boys_number);
+	for (auto &skill : boys_skill)
 		cin >> skill;
-		boys[skill]++;
-	}
 
-	cin >> size;
-	while (size--)
-	{
+	ranges::sort(boys_skill);
+
+	cin >> girls_number;
+
+	vector<int16_t> girls_skill(girls_number);
+	for (auto &skill : girls_skill)
 		cin >> skill;
-		girls[skill]++;
-	}
 
-	uint32_t total = 0;
+	ranges::sort(girls_skill);
 
-	for (auto boy : boys)
-	{
-		uint32_t pairs = min(girls[boy.first], boy.second);
-		boy.second -= pairs;
-		girls[boy.first] -= pairs;
-		total += pairs;
-	}
+	int16_t result = 0;
+	for (auto boy = 0; boy < boys_number; boy++)
+		for (auto girl = 0; girl < girls_number; girl++)
+			if (abs(boys_skill[boy] - girls_skill[girl]) <= 1)
+			{
+				girls_skill[girl] = 1000;
+				result++;
+				break;
+			}
 
-	for (auto girl : girls)
-	{
-		uint32_t pairs = min(boys[girl.first], girl.second);
-		girl.second -= pairs;
-		boys[girl.first] -= pairs;
-		total += pairs;
-	}
-
-	cout << total;
+	cout << result;
 }
