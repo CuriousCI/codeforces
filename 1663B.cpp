@@ -1,4 +1,5 @@
 #include <iostream>
+#include <vector>
 #include <cstdint>
 #include <algorithm>
 
@@ -12,6 +13,11 @@ int main()
 	int32_t number;
 	cin >> number;
 
-	// cout << number + 1;
-	cout << 3000;
+	vector<int32_t> ratings = {1200, 1400, 1600, 1900, 2100, 2300, 2400, 2600, 3000};
+	for (auto rating : ratings)
+		if (rating > number)
+		{
+			cout << rating;
+			return 0;
+		}
 }
