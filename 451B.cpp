@@ -1,4 +1,5 @@
 #include <iostream>
+#include <ranges>
 #include <vector>
 #include <cstdint>
 #include <algorithm>
@@ -12,40 +13,29 @@ int main()
 
 	uint64_t size, start = 0;
 	cin >> size;
+
 	vector<uint64_t> numbers(size);
 	for (auto &number : numbers)
 		cin >> number;
 
-	vector<pair<uint64_t, uint64_t>> rngs;
+	vector<uint64_t> sorted_numbers(numbers);
+	ranges::sort(sorted_numbers);
 
-	bool doable = true;
+	uint64_t left = 0, right = size - 1;
+	while (numbers[left] == sorted_numbers[left] && left < size)
+		left++;
+	while (numbers[right] == sorted_numbers[right] && right > 0)
+		right--;
 
-	for (auto index = 0; index < size - 1 && doable; index++)
-	{
-		if (numbers[index] < numbers[index + 1])
-		{
-			if (start == index)
-				start++;
-			else
-			{
-				rngs.push_back({start, index});
-				start = index + 1;
-			}
-		}
-		else if (max(numbers[index], numbers[index + 1]) - min(numbers[index], numbers[index + 1]) != 1)
-			doable = false;
-	}
-
-	if (start != size - 1)
-		rngs.push_back({start, size - 1});
-
-	if (!doable)
-		cout << "no";
-	else if (!rngs.size())
+	if (left > right)
 		cout << "yes\n1 1";
-	else if (rngs.size() > 1)
-		cout << "no";
 	else
-		cout << "yes\n"
-			 << rngs.front().first + 1 << ' ' << rngs.front().second + 1;
+	{
+		ranges::reverse(numbers.begin() + left, numbers.begin() + right + 1);
+		if (ranges::is_sorted(numbers))
+			cout << "yes\n"
+				 << left + 1 << ' ' << right + 1;
+		else
+			cout << "no";
+	}
 }
